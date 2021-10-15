@@ -1,0 +1,32 @@
+{% extends "flights/layout.html" %}
+
+{% block body %}
+	<a style="float:right; " href="{% url 'index' %}">Go Home</a>
+	<h1>Flight Details</h1>
+	<h4>Flight ID: {{ flight.id }}</h4>
+	<h4>Origin: {{ flight.origin }}</h4>
+	<h4>Destination: {{ flight.destination }}</h4>
+	<h4>Duration: {{ flight.duration }}</h4>
+
+	<h1>Passengers</h1>
+	<ul>
+		{% for passenger in passengers %}
+			<li>{{ passenger }}</li>
+		{% empty %}	
+			<li>No Passengers</li>
+		{% endfor %}
+	</ul>
+
+	<h1>Add Passengers</h1>
+	<form action="{% url 'book' flight.id %}" method="post">
+		{% csrf_token %}
+		<select name="passenger">
+			{% for passenger in non_passengers %}
+				<option value="{{passenger.id}}">{{ passenger }}</option>
+			{% empty %}	
+				<option>No Remaining Passengers</option>
+			{% endfor %}
+		</select>
+		<button>Submit</button>
+	</form>
+{% endblock %}
